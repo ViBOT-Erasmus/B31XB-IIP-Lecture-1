@@ -3,7 +3,7 @@
 %% Guillaume Lemaitre, October 2014
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\documentclass{beamer}
+\documentclass[table]{beamer}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 
@@ -25,6 +25,7 @@
 \usepackage{epstopdf}
 \usepackage{subfigure}
 \usepackage{transparent}
+\usepackage{fixltx2e}
 
 %% In order to draw some graphs
 \usepackage{tikz,xifthen}
@@ -42,6 +43,8 @@
 \usepackage{pifont}
 \newcommand{\tick}{\color{green!60!black!80}\ding{51}}
 \newcommand{\cross}{\color{red!60!black!80}\ding{55}}
+
+%\usepackage[table]{xcolor}
 
 \title{Introduction to Image Processing}
 \author{Guillaume Lema\^itre \\ \texttt{guillaume.lemaitre@udg.edu}}
@@ -240,5 +243,472 @@
     \end{block}}
 \end{frame}
 
+\section{Digital Image}
+\subsection{Formation}
+
+\begin{frame}
+  \frametitle{Digital Image}
+  %\framesubtitle{}
+    \begin{block}{Digital image formation}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.4\textheight]{./images/img_form.png}
+      \end{figure}
+      \begin{itemize}\scriptsize
+        \item $f(x,y)$: intensity or brightness of a pixel at a position $(x,y)$
+        \item $0 < f(x,y) < +\infty$
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+  %\framesubtitle{}
+    \begin{block}{Digital image formation}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.4\textheight]{./images/img_form.png}
+      \end{figure}
+      \begin{itemize}\scriptsize
+        \item<1-> $r(x,y)$: illumination --- $[0, +\infty[$
+        \item<2-> $i(x,y)$: reflectance --- $[0,1]$
+        \item<3-> $f(x,y) = r(x,y) i(x,y)$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+  %\framesubtitle{}
+    \begin{block}{Example of reflectance}
+      \begin{itemize}\scriptsize
+        \item Black velvet: 0.01
+        \item Snow: 0.93
+        \end{itemize}
+    \end{block}
+    \begin{block}{Example of illumination}
+      \begin{itemize}\scriptsize
+        \item Sunny day: 9000 foot-candles
+        \item Cloudy day: 1000 foot-candles
+        \item Full moon: 0.01 foot-candles
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \begin{block}{In practise}
+      \begin{itemize}\scriptsize
+      \item $i(x,y)$ and $r(x,y)$ are bounded
+      \end{itemize}
+      {\scriptsize
+      \begin{eqnarray}
+        i_{\text{min}}(x_0, y_0) r_{\text{min}}(x_0, y_0) < & f(x_0, y_0) & < i_{\text{max}}(x_0, y_0) r_{\text{max}}(x_0, y_0) \ , \\
+        L_\text{min} < & f(x_0, y_0) & < L_\text{max} \ .
+      \end{eqnarray}}
+    \begin{itemize}
+      \item $[L_\text{min}, L_\text{max}] \approx [10, 1000]$ --- Shifted in $[0, L-1]$
+    \end{itemize}
+    \only<2>{
+    $\rightarrow$ What is the value for true white and black colors in an image?}
+    \end{block}
+\end{frame}
+
+\subsection{Sampling \& quantisation}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1>{\begin{block}{Conversion from continuous to digital}
+      \begin{itemize}
+        \item $f(x,y)$ is a continuous function with regarding the coordinates and the amplitude
+        \item Image sampling to refer to spatial coordinates
+        \item Signal quantisation to digitise the amplitude 
+      \end{itemize}
+    \end{block}}
+  \only<2>{\begin{block}{Sampling}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.6\textheight]{./images/sampling.png}
+      \end{figure}
+    \end{block}}
+  \only<3>{\begin{block}{Quantisation}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.6\textheight]{./images/quantisation.png}
+      \end{figure}
+    \end{block}}
+  \only<4>{\begin{block}{Digital image}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.4\textheight]{./images/dig_img.png}
+      \end{figure}
+      \begin{itemize}\scriptsize
+        \item Check the appendix notebook
+      \end{itemize}
+    \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1>{\begin{block}{Coordinate system convention}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.6\textheight]{./images/coo_img.png}
+      \end{figure}
+    \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1>{\begin{block}{Digitisation requirements}
+        \begin{itemize}\scriptsize
+          \item Set an height: $M$
+          \item Set an width: $N$
+          \item Set an intensity level: $L = 2^k$ and equally spaced
+          \item \emph{Dynamic range} : $\frac{L_{\text{min}}}{L_{\text{max}}}$
+        \end{itemize}
+        \begin{figure}
+        \centering
+        \includegraphics[height=.4\textheight]{./images/windows.jpg}
+      \end{figure}
+    \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1>{\begin{block}{Parameter variations}
+        \begin{figure}
+        \centering
+        \includegraphics[width=.8\textwidth]{./images/storage.png}
+      \end{figure}
+      $\rightarrow$ What is the best values regarding the resolution and dynamic range parameters?
+      \begin{itemize}\scriptsize
+        \item Larger is better ...
+        \item ... storage and processing could be a problem
+      \end{itemize}
+    \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1>{\begin{block}{Isopreference curves}
+        \begin{figure}
+        \centering
+        \includegraphics[width=.6\textwidth]{./images/iso1.png}
+      \end{figure}
+      \vspace{-.7cm}
+      \begin{figure}
+        \centering
+        \includegraphics[height=.3\textheight]{./images/iso2.png}
+      \end{figure}
+    \end{block}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Digital Image}
+%   %\framesubtitle{}
+    \only<1->{\begin{block}{Non-uniform sampling and quantisation}
+        \begin{itemize}
+          \item<2-> Fine sampling in details region --- coarse sampling in smooth region
+          \item<3-> Few gray levels in details regions --- more in smooth region
+        \end{itemize}
+    \end{block}}
+\end{frame}
+
+\section{Pixel Relationships}
+
+\subsection{Neighbours}
+
+\begin{frame}
+  \frametitle{Pixel Relationships}
+  %   % \framesubtitle{}
+  \only<1->{\begin{block}{Neighours}\scriptsize
+      \begin{columns}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+            \emph{4-neighbours} --- N\textsubscript{4}-p\\\vspace{.5cm}
+            \only<1>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+              \only<2->{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & \cellcolor{orounam!50}0 & 0 & 1\\ \hline
+                0 & \cellcolor{orounam!50}0 & \cellcolor{azulunam!50}1 & \cellcolor{orounam!50}0 & 0\\ \hline
+                1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+          \emph{D-neighbours} --- N\textsubscript{D}-p\\\vspace{.5cm}
+            \only<1-2>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+              \only<3->{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & 0 & \cellcolor{orounam!50}0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & \cellcolor{orounam!50}0 & 1 & \cellcolor{orounam!50}1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+            \emph{8-neighbours} --- N\textsubscript{8}-p\\\vspace{.5cm}
+            \only<1-3>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+              \only<4>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}0 & \cellcolor{orounam!50}0 & 1\\ \hline
+                0 & \cellcolor{orounam!50}0 & \cellcolor{azulunam!50}1 & \cellcolor{orounam!50}0 & 0\\ \hline
+                1 & \cellcolor{orounam!50}0 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+      \end{columns}
+    \end{block}}
+\end{frame}
+
+\subsection{Adjacency}
+
+\begin{frame}
+  \frametitle{Pixel Relationships}
+  %   % \framesubtitle{}
+  \begin{block}{Adjacency}\scriptsize
+      \begin{center}
+        \vspace{.1cm}
+        Let denotes $V=\{1\}$ defining the adjacency
+        \vspace{-.3cm}
+      \end{center}
+      \begin{columns}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+            \emph{4-adjacency}\\\vspace{.5cm}
+            \only<1>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+            \only<2->{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+            \emph{8-adjacency}\\\vspace{.5cm}
+            \only<1-2>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+              \only<3->{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+        \begin{column}{.33\linewidth}
+          \begin{center}
+            \emph{m-adjacency}\\\vspace{.5cm}
+            \only<1-3>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+              \only<4>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & 1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}
+            $q \in N_4(p)$}
+          \only<5>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & \cellcolor{orounam!50}1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}
+            $q \in N_D(p)$}
+          \only<6>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & 1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}
+            $q \in N_D(p)$ AND $N_4(p) \cap N_4(q) \notin V$}
+          \only<7>{\begin{tabular}{|c|c|c|c|c|}
+                \hline
+                0 & 1 & 1 & 1 & 0\\ \hline
+                0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+                0 & 0 & \cellcolor{azulunam!50}1 & 0 & 0\\ \hline
+                1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+                0 & 1 & 1 & 0 & 1\\ \hline
+              \end{tabular}}
+          \end{center}
+        \end{column}
+      \end{columns}
+    \end{block}
+\end{frame}
+
+\subsection{Path}
+
+\begin{frame}
+  \frametitle{Pixel Relationships}
+  %   % \framesubtitle{}
+  \begin{block}{Path}\scriptsize
+    \begin{center}
+    \only<1>{\begin{tabular}{|c|c|c|c|c|}
+      \hline
+      0 & \cellcolor{azulunam!50}1 & 1 & 1 & 0\\ \hline
+      0 & 1 & 0 & 0 & 1\\ \hline
+      0 & 1 & 1 & 0 & 0\\ \hline
+      1 & 0 & 1 & 1 & 0\\ \hline
+      0 & 1 & 1 & 1 & \cellcolor{azulunam!50}1\\ \hline
+    \end{tabular}}
+  \only<2>{
+    4-path\\\vspace{.7cm}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      0 & \cellcolor{azulunam!50}1 & 1 & 1 & 0\\ \hline
+      0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+      0 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & 0 & 0\\ \hline
+      1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+      0 & 1 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & \cellcolor{azulunam!50}1\\ \hline
+    \end{tabular}}
+  \only<3>{
+    8-path\\\vspace{.7cm}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      0 & \cellcolor{azulunam!50}1 & 1 & 1 & 0\\ \hline
+      0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+      0 & 1 & \cellcolor{orounam!50}1 & 0 & 0\\ \hline
+      1 & 0 & 1 & \cellcolor{orounam!50}1 & 0\\ \hline
+      0 & 1 & 1 & 1 & \cellcolor{azulunam!50}1\\ \hline
+    \end{tabular}}
+    \only<4>{
+    m-path\\\vspace{.7cm}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      0 & \cellcolor{azulunam!50}1 & 1 & 1 & 0\\ \hline
+      0 & \cellcolor{orounam!50}1 & 0 & 0 & 1\\ \hline
+      0 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & 0 & 0\\ \hline
+      1 & 0 & \cellcolor{orounam!50}1 & 1 & 0\\ \hline
+      0 & 1 & \cellcolor{orounam!50}1 & \cellcolor{orounam!50}1 & \cellcolor{azulunam!50}1\\ \hline
+    \end{tabular}
+  \begin{itemize}
+    \item if $(x_{\text{init}}, y_{\text{init}}) = (x_{\text{end}}, y_{\text{end}}) \rightarrow$ closed path 
+  \end{itemize}}
+  \end{center}
+  \end{block}
+\end{frame}
+
+\subsection{Subset \& region}
+
+\begin{frame}
+  \frametitle{Pixel Relationships}
+  %   % \framesubtitle{}
+  \begin{block}{Subset}
+    \begin{itemize}
+    \item $p$ and $q$ are \emph{connected} in the subset $S$ if there is a path in with all the pixels belonging to $S$
+    \item For any pixel $p$ in $S$, the set of pixels in $S$ that are connected to p is a \emph{connected component} of $S$
+    \item If $S$ has only one connected component then $S$ is called a \emph{connected set}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Region}
+    \begin{itemize}
+    \item $R$ is a subset of pixels: $R$ is a region if $R$ is a connected set
+    \item Region can be \emph{adjacent} or \emph{disjoint}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Distance measures}
+
+\begin{frame}
+  \frametitle{Pixel Relationships}
+  \framesubtitle{Distance measures}
+  \only<1>{\begin{block}{Definition}
+    For pixels $p,q,z$ with coordinates $(x,y)$, $(s,t)$, $(u,v)$, $D$ is a distance function or metric if:
+    \begin{itemize}
+    \item $D(p,q) \geq 0 \ (D(p,q)=0 \text{ iff } p=q)$
+    \item $D(p,q) = D(q,p)$ and
+    \item $D(p,z) \leq D(p,q) + D(q,z)$
+    \end{itemize}
+  \end{block}}
+  \only<2>{\begin{block}{Euclidean distance}
+    For pixels $p,q,z$ with coordinates $(x,y)$, $(s,t)$, $(u,v)$:
+    \begin{itemize}
+    \item  $D_e(p,q) = \sqrt{(x-s)^2 + (y-t)^2}$
+    \end{itemize}
+  \end{block}
+  \begin{block}{D\textsubscript{4} distance}
+    \begin{itemize}
+    \item  $D_4(p,q) = |x-s| + |y-t|$
+    \end{itemize}
+  \end{block}
+  \begin{block}{D\textsubscript{8} distance}
+    \begin{itemize}
+    \item  $D_8(p,q) = \text{max}(|x-s|, |y-t|)$
+    \end{itemize}
+  \end{block}
+  \begin{block}{D\textsubscript{m} distance}
+    \begin{itemize}
+    \item  Shortest $m$-path considering the $m$-adjacency
+    \end{itemize}
+  \end{block}}
+\end{frame}
 
 \end{document}

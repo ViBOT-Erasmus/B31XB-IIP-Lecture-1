@@ -9,6 +9,7 @@
      "tikz-qtree"
      "xifthen"
      "tikz"
+     "fixltx2e"
      "transparent"
      "subfigure"
      "epstopdf"
@@ -17,6 +18,7 @@
      "amsmath"
      "amsthm"
      "amssymb"
+     ""
      "fontenc"
      "T1"
      "inputenc"
@@ -24,5 +26,5 @@
      "latex2e"
      "beamer10"
      "beamer"
-     "")))
+     "table")))
 
