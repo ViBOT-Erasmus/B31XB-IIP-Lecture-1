@@ -2,7 +2,7 @@
 
 Guillaume Lemaitre - Fabrice Meriaudeau
 
-## Lecture 1 - digital image processing fundamentals
+## Lecture 1 - Digital Image Processing Fundamentals
 
 ### Abstract
 
